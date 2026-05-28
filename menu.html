@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Signature Menu | ChefPizza</title>
+    <meta name="description" content="Explore ChefPizza signature menu: Chicken Tikka Supreme, Spicy Chicken Fajita, Beef Bihari Kabab, and Achari Paneer in PKR.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Dynamic Custom Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Sticky Glassmorphic Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" width="36" height="36">
+                    <circle cx="50" cy="50" r="40" stroke="url(#logo-grad)" stroke-width="6" fill="none" />
+                    <path d="M50 15 L80 65 L20 65 Z" fill="url(#logo-grad)" opacity="0.8" />
+                    <circle cx="50" cy="40" r="5" fill="#fff" />
+                    <circle cx="42" cy="52" r="4" fill="#fff" />
+                    <circle cx="58" cy="52" r="4" fill="#fff" />
+                    <defs>
+                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff5722" />
+                            <stop offset="100%" stop-color="#ffb74d" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>Chef<span class="highlight">Pizza</span></span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="menu.html" class="nav-link active">Our Menu</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="about.html" class="nav-link">About Crew</a>
+                <a href="location.html" class="nav-link">Live Radar</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="cart-toggle-btn" class="cart-btn" aria-label="Open Shopping Cart">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                    </svg>
+                    <span id="cart-badge" class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subpage Hero -->
+    <section class="subpage-hero">
+        <div class="subpage-hero-content">
+            <span class="hero-tag">Handcrafted Gourmet Selection</span>
+            <h1 class="hero-title">Our Signature <span class="text-glow">Pakistani Menu</span></h1>
+            <p class="hero-subtitle">
+                Explore our local favorites, hand-tossed to absolute crust perfection and loaded with premium wood-fired ingredients.
+            </p>
+        </div>
+    </section>
+
+    <!-- Menu Grid Section -->
+    <section class="menu-section" style="padding-top: 1rem;">
+        <div class="menu-grid">
+            <!-- Product Card 1 -->
+            <div class="menu-card" data-id="tikka" data-name="Chicken Tikka Supreme" data-price="1399">
+                <div class="card-img-container">
+                    <div class="pizza-glow-back"></div>
+                    <img src="assets/cosmic_margherita.png" alt="Chicken Tikka Supreme" class="pizza-image">
+                </div>
+                <div class="card-body">
+                    <div class="card-rating">⭐⭐⭐⭐⭐ <span class="rating-val">(4.9)</span></div>
+                    <h3>Chicken Tikka Supreme</h3>
+                    <p class="card-desc">Smokey clay-oven chicken tikka chunks, caramelized red onions, premium mozzarella cheese, sliced fresh green chilies, and a drizzle of fresh coriander oil.</p>
+                    <div class="card-footer">
+                        <span class="price">Rs. 1,399</span>
+                        <button class="btn-add-to-cart btn btn-primary-sm">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="menu-card" data-id="fajita" data-name="Spicy Chicken Fajita" data-price="1499">
+                <div class="card-img-container">
+                    <div class="pizza-glow-back purple"></div>
+                    <img src="assets/nebula_pepperoni.png" alt="Spicy Chicken Fajita" class="pizza-image">
+                </div>
+                <div class="card-body">
+                    <div class="card-rating">⭐⭐⭐⭐⭐ <span class="rating-val">(4.8)</span></div>
+                    <h3>Spicy Chicken Fajita</h3>
+                    <p class="card-desc">Fiery marinated fajita chicken strips, fire-roasted sweet bell peppers, onions, ripe tomatoes, black olives, and layered mozzarella cheese.</p>
+                    <div class="card-footer">
+                        <span class="price">Rs. 1,499</span>
+                        <button class="btn-add-to-cart btn btn-primary-sm">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="menu-card" data-id="bihari" data-name="Beef Bihari Kabab" data-price="1599">
+                <div class="card-img-container">
+                    <div class="pizza-glow-back gold"></div>
+                    <img src="assets/supernova_bbq.png" alt="Beef Bihari Kabab" class="pizza-image">
+                </div>
+                <div class="card-body">
+                    <div class="card-rating">⭐⭐⭐⭐⭐ <span class="rating-val">(5.0)</span></div>
+                    <h3>Beef Bihari Kabab</h3>
+                    <p class="card-desc">Slow-cooked tender beef Bihari kabab chunks, sliced green chilies, red onion crescents, and a cool refreshing mint yogurt drizzle.</p>
+                    <div class="card-footer">
+                        <span class="price">Rs. 1,599</span>
+                        <button class="btn-add-to-cart btn btn-primary-sm">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="menu-card" data-id="achari" data-name="Achari Paneer Delight" data-price="1299">
+                <div class="card-img-container">
+                    <div class="pizza-glow-back green"></div>
+                    <img src="assets/veggie_supreme.png" alt="Achari Paneer Delight" class="pizza-image">
+                </div>
+                <div class="card-body">
+                    <div class="card-rating">⭐⭐⭐⭐☆ <span class="rating-val">(4.7)</span></div>
+                    <h3>Achari Paneer Delight</h3>
+                    <p class="card-desc">Soft paneer cottage cheese cubes marinated in spicy authentic Punjabi pickling achari spices, red onions, sweet bell peppers, and fresh cilantro.</p>
+                    <div class="card-footer">
+                        <span class="price">Rs. 1,299</span>
+                        <button class="btn-add-to-cart btn btn-primary-sm">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Area -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 ChefPizza Inc. Handcrafting wood-fired masterpieces. Taste the Future.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Delivery Status</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shared Cart Drawer Overlay -->
+    <div id="cart-drawer" class="cart-drawer-overlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h2>Your Cart <span id="cart-count-title">(0)</span></h2>
+                <button id="cart-close-btn" class="close-btn" aria-label="Close Cart">&times;</button>
+            </div>
+
+            <div id="cart-view-container" class="cart-panel-body active">
+                <div id="cart-empty-state" class="cart-empty-state">
+                    <div class="empty-icon">🍕</div>
+                    <h3>Your Cart is Empty!</h3>
+                    <p>Add some gourmet wood-fired energy to start your feast.</p>
+                    <button id="start-shopping-btn" class="btn btn-primary" style="margin-top: 1.5rem;">Explore Menu</button>
+                </div>
+
+                <div id="cart-items-list" class="cart-items-list">
+                    <!-- Dynamic items loaded here -->
+                </div>
+
+                <div id="cart-summary-section" class="cart-summary-section">
+                    <div class="summary-row">
+                        <span>Hand-Tossed Crusts</span>
+                        <span id="summary-subtotal">Rs. 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Piping Hot Delivery</span>
+                        <span id="summary-delivery">Rs. 199</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>GST Sales Tax (16%)</span>
+                        <span id="summary-tax">Rs. 0</span>
+                    </div>
+                    <hr class="summary-divider">
+                    <div class="summary-row total">
+                        <span>Total Cost</span>
+                        <span id="summary-total">Rs. 0</span>
+                    </div>
+                    <a href="checkout.html" id="checkout-btn" class="btn btn-primary btn-block">Proceed to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio effects -->
+    <audio id="success-sound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-84.wav" preload="auto"></audio>
+    <audio id="cart-add-sound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
+
+    <!-- Shared App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
