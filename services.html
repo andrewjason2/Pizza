@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | ChefPizza</title>
+    <meta name="description" content="Explore ChefPizza services: Traditional catering, automated pizza subscription plans, and calculate local delivery fees.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Dynamic Custom Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Sticky Glassmorphic Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" width="36" height="36">
+                    <circle cx="50" cy="50" r="40" stroke="url(#logo-grad)" stroke-width="6" fill="none" />
+                    <path d="M50 15 L80 65 L20 65 Z" fill="url(#logo-grad)" opacity="0.8" />
+                    <circle cx="50" cy="40" r="5" fill="#fff" />
+                    <circle cx="42" cy="52" r="4" fill="#fff" />
+                    <circle cx="58" cy="52" r="4" fill="#fff" />
+                    <defs>
+                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff5722" />
+                            <stop offset="100%" stop-color="#ffb74d" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>Chef<span class="highlight">Pizza</span></span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="menu.html" class="nav-link">Our Menu</a>
+                <a href="services.html" class="nav-link active">Services</a>
+                <a href="about.html" class="nav-link">About Crew</a>
+                <a href="location.html" class="nav-link">Live Radar</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="cart-toggle-btn" class="cart-btn" aria-label="Open Shopping Cart">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                    </svg>
+                    <span id="cart-badge" class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subpage Hero -->
+    <section class="subpage-hero">
+        <div class="subpage-hero-content">
+            <span class="hero-tag">Culinary & Delivery Systems</span>
+            <h1 class="hero-title">Gourmet Catering & <span class="text-glow">Delivery Services</span></h1>
+            <p class="hero-subtitle">
+                From hand-tossed wood-fired catering at your private events to customized automated weekly pizza subscriptions delivered hot.
+            </p>
+        </div>
+    </section>
+
+    <!-- Interactive Delivery Cost & Time Estimator -->
+    <section class="calc-section">
+        <div class="section-header">
+            <span class="section-tag">Delivery Estimator</span>
+            <h2>Delivery Distance & Fee Calculator</h2>
+            <p>Calculate your estimated arrival time and delivery fees based on your distance from our nearest kitchen hub.</p>
+        </div>
+
+        <div class="calc-container">
+            <div class="calc-inputs">
+                <h3>Delivery Parameters</h3>
+                
+                <div class="form-group">
+                    <label for="altitude-slider">Delivery Distance: <strong id="altitude-val" class="text-glow">8 km</strong></label>
+                    <input type="range" id="altitude-slider" min="1" max="25" value="8" class="slider-control">
+                    <div class="slider-bounds">
+                        <span>Very Close (1 km)</span>
+                        <span>Out of Town (25 km)</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="velocity-select">Delivery Speed Priority</label>
+                    <div class="payment-options" style="flex-direction: row; gap: 1rem;">
+                        <label class="payment-option selected half" style="flex: 1; text-align: center; justify-content: center; padding: 0.75rem;">
+                            <input type="radio" name="velocity-mode" value="1" checked style="display: none;">
+                            <span>⚡ Standard (35 mins)</span>
+                        </label>
+                        <label class="payment-option half" style="flex: 1; text-align: center; justify-content: center; padding: 0.75rem;">
+                            <input type="radio" name="velocity-mode" value="2" style="display: none;">
+                            <span>🔥 Express (25 mins)</span>
+                        </label>
+                        <label class="payment-option half" style="flex: 1; text-align: center; justify-content: center; padding: 0.75rem;">
+                            <input type="radio" name="velocity-mode" value="3" style="display: none;">
+                            <span>🚀 Priority Hot-Box (15 mins)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calc-results">
+                <h3>Estimated Telemetry</h3>
+                <div class="telemetry-output-grid">
+                    <div class="t-out-card">
+                        <span class="t-lbl">Estimated Time</span>
+                        <strong id="calc-time" class="t-val text-glow">22 mins</strong>
+                    </div>
+                    <div class="t-out-card">
+                        <span class="t-lbl">Delivery Fee</span>
+                        <strong id="calc-tariff" class="t-val text-glow" style="color: #66bb6a;">Rs. 350</strong>
+                    </div>
+                </div>
+                <p class="calc-hint">⚠️ Delivery times may vary dynamically based on peak hours traffic, rain, and local branch order density.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Description Grid -->
+    <section class="services-list-section">
+        <div class="crew-grid">
+            <div class="crew-card">
+                <div class="crew-img-placeholder">🍕</div>
+                <h3>Mobile Event Catering</h3>
+                <p>Host corporate events, family dinners, or birthdays with our mobile artisanal brick oven trailers. We stretch and bake fresh custom pizzas right before your guests' eyes.</p>
+            </div>
+            <div class="crew-card">
+                <div class="crew-img-placeholder">📦</div>
+                <h3>Double-Insulated Crates</h3>
+                <p>Every single pizza is delivered in custom-molded, double-insulated cardboard thermal boxes. The container retains steam and maintains heat at exactly 140°F during delivery.</p>
+            </div>
+            <div class="crew-card">
+                <div class="crew-img-placeholder">📅</div>
+                <h3>Artisanal Subscriptions</h3>
+                <p>Never run out of wood-fired taste. Subscribe to our weekly or monthly automated meal delivery packages. Our drivers will lock on your coordinates and drop fresh fuel right on schedule.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Area -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 ChefPizza Inc. Handcrafting wood-fired masterpieces. Taste the Future.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Delivery Status</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shared Cart Drawer Overlay -->
+    <div id="cart-drawer" class="cart-drawer-overlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h2>Your Cart <span id="cart-count-title">(0)</span></h2>
+                <button id="cart-close-btn" class="close-btn" aria-label="Close Cart">&times;</button>
+            </div>
+
+            <div id="cart-view-container" class="cart-panel-body active">
+                <div id="cart-empty-state" class="cart-empty-state">
+                    <div class="empty-icon">🍕</div>
+                    <h3>Your Cart is Empty!</h3>
+                    <p>Add some gourmet wood-fired energy to start your feast.</p>
+                    <button id="start-shopping-btn" class="btn btn-primary" style="margin-top: 1.5rem;">Explore Menu</button>
+                </div>
+
+                <div id="cart-items-list" class="cart-items-list">
+                    <!-- Dynamic items loaded here -->
+                </div>
+
+                <div id="cart-summary-section" class="cart-summary-section">
+                    <div class="summary-row">
+                        <span>Hand-Tossed Crusts</span>
+                        <span id="summary-subtotal">Rs. 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Piping Hot Delivery</span>
+                        <span id="summary-delivery">Rs. 199</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>GST Sales Tax (16%)</span>
+                        <span id="summary-tax">Rs. 0</span>
+                    </div>
+                    <hr class="summary-divider">
+                    <div class="summary-row total">
+                        <span>Total Cost</span>
+                        <span id="summary-total">Rs. 0</span>
+                    </div>
+                    <a href="checkout.html" id="checkout-btn" class="btn btn-primary btn-block">Proceed to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio effects -->
+    <audio id="success-sound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-84.wav" preload="auto"></audio>
+    <audio id="cart-add-sound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
+
+    <!-- Custom Calculator Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slider = document.getElementById('altitude-slider');
+            const altVal = document.getElementById('altitude-val');
+            const timeVal = document.getElementById('calc-time');
+            const tariffVal = document.getElementById('calc-tariff');
+            const velocityRadios = document.getElementsByName('velocity-mode');
+
+            function updateCalculator() {
+                const distance = parseInt(slider.value);
+                altVal.textContent = `${distance} km`;
+
+                let velocityMultiplier = 1;
+                let radioValue = '1';
+                
+                for (const r of velocityRadios) {
+                    if (r.checked) {
+                        radioValue = r.value;
+                        break;
+                    }
+                }
+
+                if (radioValue === '1') {
+                    velocityMultiplier = 1;
+                } else if (radioValue === '2') {
+                    velocityMultiplier = 1.4;
+                } else if (radioValue === '3') {
+                    velocityMultiplier = 2.0;
+                }
+
+                // Travel Time formula: time = (distance / (0.6 * speedMultiplier)) + 8 mins
+                const time = Math.max(10, Math.round((distance / (0.6 * velocityMultiplier)) + 8));
+                timeVal.textContent = `${time} minutes`;
+
+                // Tariff Formula in PKR: Rs. 149 base + (distance * Rs. 25 * velocityMultiplier)
+                const tariff = 149 + (distance * 20 * velocityMultiplier);
+                tariffVal.textContent = `Rs. ${Math.round(tariff)}`;
+            }
+
+            slider.addEventListener('input', updateCalculator);
+
+            velocityRadios.forEach(radio => {
+                const parentLabel = radio.closest('.payment-option');
+                parentLabel.addEventListener('click', (e) => {
+                    document.querySelectorAll('input[name="velocity-mode"]').forEach(r => {
+                        r.checked = false;
+                        r.closest('.payment-option').classList.remove('selected');
+                    });
+                    
+                    radio.checked = true;
+                    parentLabel.classList.add('selected');
+                    updateCalculator();
+                });
+            });
+
+            updateCalculator();
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
