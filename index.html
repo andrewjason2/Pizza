@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChefPizza | Artisanal Wood-Fired Taste</title>
+    <meta name="description" content="Indulge in ChefPizza, where traditional Italian baking meets premium fresh ingredients. Order our hand-tossed gourmet pizzas today.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Dynamic Custom Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Sticky Glassmorphic Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" width="36" height="36">
+                    <circle cx="50" cy="50" r="40" stroke="url(#logo-grad)" stroke-width="6" fill="none" />
+                    <path d="M50 15 L80 65 L20 65 Z" fill="url(#logo-grad)" opacity="0.8" />
+                    <circle cx="50" cy="40" r="5" fill="#fff" />
+                    <circle cx="42" cy="52" r="4" fill="#fff" />
+                    <circle cx="58" cy="52" r="4" fill="#fff" />
+                    <defs>
+                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff5722" />
+                            <stop offset="100%" stop-color="#ffb74d" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>Chef<span class="highlight">Pizza</span></span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="menu.html" class="nav-link">Our Menu</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="about.html" class="nav-link">About Crew</a>
+                <a href="location.html" class="nav-link">Live Radar</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="cart-toggle-btn" class="cart-btn" aria-label="Open Shopping Cart">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                    </svg>
+                    <span id="cart-badge" class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section (Interactive Play Area) -->
+    <section id="hero" class="hero-section">
+        <!-- Interactive Canvas Background -->
+        <canvas id="physics-canvas"></canvas>
+
+        <div class="hero-content">
+            <span class="hero-tag">Handcrafted & Wood-Fired</span>
+            <h1 class="hero-title">Gourmet Pizza, <span class="text-glow">Tossed Daily</span></h1>
+            <p class="hero-subtitle">
+                Welcome to ChefPizza. Experience light, hand-tossed dough, premium fresh ingredients, and rich wood-fired heat. Grab and play with our fresh ingredient board while we prep your oven-hot masterpiece.
+            </p>
+            <div class="hero-actions">
+                <a href="menu.html" class="btn btn-primary">Explore the Menu</a>
+                <button id="gravity-shake-btn" class="btn btn-secondary">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                    </svg>
+                    Mix Ingredients
+                </button>
+            </div>
+        </div>
+
+        <!-- Mouse Instruction Indicator -->
+        <div class="mouse-instruction">
+            <span class="mouse-icon">🖱️</span>
+            <span>Drag, throw, or slide fresh ingredients with your cursor!</span>
+        </div>
+    </section>
+
+    <!-- Interactive Cooking Info Section -->
+    <section id="physics-info" class="info-section">
+        <div class="section-header">
+            <h2>The Secret of Our Craft</h2>
+            <p>How we bring premium, authentic Italian flavors directly to your table</p>
+        </div>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="card-icon">🥖</div>
+                <h3>Slow-Fermented Dough</h3>
+                <p>Our sourdough yeast proofs slowly for 48 hours, creating a incredibly airy crust structure that bakes to a perfect golden char.</p>
+            </div>
+            <div class="info-card">
+                <div class="card-icon">🍅</div>
+                <h3>Artisanal Saucing</h3>
+                <p>Crushed organic San Marzano tomatoes mixed with cold-pressed olive oil, seasoned with sea salt and fresh basil leaves, guaranteeing rich flavor coverage.</p>
+            </div>
+            <div class="info-card">
+                <div class="card-icon">🔥</div>
+                <h3>900°F Wood-Fired Heat</h3>
+                <p>Fired rapidly inside custom volcanic stone domes, cooking the cheese and fresh toppings in under 90 seconds while locking in succulent juices.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Area -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 ChefPizza Inc. Handcrafting wood-fired masterpieces. Taste the Future.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Delivery Status</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Glassmorphic Slide-Out Cart Drawer -->
+    <div id="cart-drawer" class="cart-drawer-overlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h2>Your Cart <span id="cart-count-title">(0)</span></h2>
+                <button id="cart-close-btn" class="close-btn" aria-label="Close Cart">&times;</button>
+            </div>
+
+            <!-- Cart View Mode -->
+            <div id="cart-view-container" class="cart-panel-body active">
+                <div id="cart-empty-state" class="cart-empty-state">
+                    <div class="empty-icon">🍕</div>
+                    <h3>Your Cart is Empty!</h3>
+                    <p>Add some gourmet wood-fired energy to start your feast.</p>
+                    <button id="start-shopping-btn" class="btn btn-primary" style="margin-top: 1.5rem;">Explore Menu</button>
+                </div>
+
+                <div id="cart-items-list" class="cart-items-list">
+                    <!-- Dynamic cart items loaded here -->
+                </div>
+
+                <div id="cart-summary-section" class="cart-summary-section">
+                    <div class="summary-row">
+                        <span>Hand-Tossed Crusts</span>
+                        <span id="summary-subtotal">Rs. 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Piping Hot Delivery</span>
+                        <span id="summary-delivery">Rs. 199</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>GST Sales Tax (16%)</span>
+                        <span id="summary-tax">Rs. 0</span>
+                    </div>
+                    <hr class="summary-divider">
+                    <div class="summary-row total">
+                        <span>Total Cost</span>
+                        <span id="summary-total">Rs. 0</span>
+                    </div>
+                    <a href="checkout.html" id="checkout-btn" class="btn btn-primary btn-block">Proceed to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio effects -->
+    <audio id="success-sound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-84.wav" preload="auto"></audio>
+    <audio id="cart-add-sound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
+
+    <!-- Scripts -->
+    <script src="physics.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
