@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | ChefPizza</title>
+    <meta name="description" content="Securely finalize your ChefPizza order. Confirm delivery details, payment structure, and place your order.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Standalone checkout page special layout grid */
+        .checkout-page-container {
+            max-width: 1200px;
+            margin: 100px auto 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 3rem;
+        }
+        .checkout-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            backdrop-filter: blur(15px);
+        }
+        .checkout-summary-box {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass-active);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            backdrop-filter: blur(20px);
+        }
+        .c-item-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .c-item-img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+        .c-item-info {
+            flex-grow: 1;
+        }
+        .c-item-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.15rem;
+            font-family: var(--font-body);
+        }
+        .c-item-info span {
+            font-size: 0.8rem;
+            color: var(--accent-orange-bright);
+            font-weight: 700;
+        }
+        .c-item-total {
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        @media(max-width: 900px) {
+            .checkout-page-container {
+                grid-template-columns: 1fr;
+                margin-top: 80px;
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Custom Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Sticky Glassmorphic Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" width="36" height="36">
+                    <circle cx="50" cy="50" r="40" stroke="url(#logo-grad)" stroke-width="6" fill="none" />
+                    <path d="M50 15 L80 65 L20 65 Z" fill="url(#logo-grad)" opacity="0.8" />
+                    <circle cx="50" cy="40" r="5" fill="#fff" />
+                    <circle cx="42" cy="52" r="4" fill="#fff" />
+                    <circle cx="58" cy="52" r="4" fill="#fff" />
+                    <defs>
+                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff5722" />
+                            <stop offset="100%" stop-color="#ffb74d" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>Chef<span class="highlight">Pizza</span></span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="menu.html" class="nav-link">Our Menu</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="about.html" class="nav-link">About Crew</a>
+                <a href="location.html" class="nav-link">Live Radar</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="cart-toggle-btn" class="cart-btn" aria-label="Open Shopping Cart" style="opacity: 0.5; pointer-events: none;">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                    </svg>
+                    <span id="cart-badge" class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content Container -->
+    <main class="checkout-page-container">
+        
+        <!-- Left Column: Forms -->
+        <section class="checkout-box">
+            <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                🛡️ <span>Secure Checkout</span>
+            </h2>
+
+            <form id="standalone-checkout-form" class="checkout-form">
+                <!-- Section 1: Customer info -->
+                <h3>1. Delivery Information</h3>
+                <div class="form-group">
+                    <label for="sc-name">Full Name</label>
+                    <input type="text" id="sc-name" required placeholder="E.g. John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="sc-phone">Phone Number</label>
+                    <input type="tel" id="sc-phone" required placeholder="E.g. +92 300 1234567">
+                </div>
+                <div class="form-group">
+                    <label for="sc-address">Delivery Address</label>
+                    <input type="text" id="sc-address" required placeholder="E.g. House 123, Sector F-7, Islamabad">
+                </div>
+
+                <!-- Section 2: Payment options -->
+                <h3 style="margin-top: 2rem;">2. Payment Method</h3>
+                <div class="payment-options">
+                    <label class="payment-option selected">
+                        <input type="radio" name="sc-payment" value="cash" checked>
+                        <span class="payment-label">💵 Cash on Delivery</span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="sc-payment" value="card">
+                        <span class="payment-label">💳 Credit Card</span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="sc-payment" value="crypt">
+                        <span class="payment-label">🌌 PizzaCoin (Crypto Ledger)</span>
+                    </label>
+                </div>
+
+                <!-- Cash Fields -->
+                <div id="sc-cash-fields" class="payment-fields">
+                    <p class="field-hint text-warning">⚠️ Note: Delivery driver accepts cash or card scans on arrival.</p>
+                </div>
+
+                <!-- Card fields -->
+                <div id="sc-card-fields" class="payment-fields hidden">
+                    <div class="form-group">
+                        <label for="sc-card">Card Number</label>
+                        <input type="text" id="sc-card" placeholder="4111 2222 3333 4444" maxlength="19">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="sc-exp">Expiration Date</label>
+                            <input type="text" id="sc-exp" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group half">
+                            <label for="sc-cvv">CVV Code</label>
+                            <input type="password" id="sc-cvv" placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PizzaCoin Fields -->
+                <div id="sc-crypt-fields" class="payment-fields hidden">
+                    <div class="form-group">
+                        <label>Send PizzaCoin to Address:</label>
+                        <div class="crypto-address-box">
+                            <code>0xLiveP1zzA4nt1Gr4v1tyF00dAddr3ss</code>
+                        </div>
+                        <p class="field-hint">Your order will process instantly upon ledger confirmation.</p>
+                    </div>
+                </div>
+
+                <!-- Section 3: Terms permit -->
+                <h3 style="margin-top: 2rem;">3. Delivery Instructions</h3>
+                <div class="terms-agreement" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); padding: 1rem; border-radius: var(--radius-md);">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="sc-terms" required>
+                        <span style="font-size: 0.85rem; line-height: 1.4;">I authorize the delivery driver to leave the hot pizza box at my door if I am not available.</span>
+                    </label>
+                </div>
+
+                <div class="checkout-actions" style="margin-top: 2.5rem;">
+                    <a href="index.html" class="btn btn-secondary" style="flex: 1;">Cancel & Return</a>
+                    <button type="submit" id="sc-submit-btn" class="btn btn-primary btn-pulse" style="flex: 1.5;">PLACE ORDER 🍕</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Right Column: Cart items review -->
+        <section class="checkout-summary-box">
+            <h3 style="margin-top: 0; font-size: 1.25rem; margin-bottom: 1.5rem;">Order Review</h3>
+            
+            <div id="sc-items-review-list">
+                <!-- Loaded via JS -->
+            </div>
+
+            <div class="cart-summary-section" style="border: none; padding-top: 0;">
+                <div class="summary-row">
+                    <span>Hand-Tossed Crusts</span>
+                    <span id="sc-subtotal">Rs. 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Piping Hot Delivery</span>
+                    <span id="sc-delivery">Rs. 199</span>
+                </div>
+                <div class="summary-row">
+                    <span>Sales Tax (16% GST)</span>
+                    <span id="sc-tax">Rs. 0</span>
+                </div>
+                <hr class="summary-divider">
+                <div class="summary-row total">
+                    <span>Total Cost</span>
+                    <span id="sc-total" class="text-glow">Rs. 0</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Overlay Success Screen (Active on order confirm) -->
+    <div id="standalone-success-overlay" class="cart-drawer-overlay" style="display: none; opacity: 1; pointer-events: auto;">
+        <div class="cart-drawer" style="right: 50%; top: 50%; transform: translate(50%, -50%); border-radius: var(--radius-lg); height: auto; max-width: 500px; border: 1px solid var(--border-glass-active); box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+            <div id="checkout-success-container" class="cart-panel-body text-center active" style="padding: 2.5rem;">
+                <div class="success-icon">🍕🛵✨</div>
+                <h2 class="text-glow">ORDER RECEIVED!</h2>
+                <p class="success-subtitle">Your fresh wood-fired feast is being prepared.</p>
+                <div class="success-card">
+                    <p style="font-size: 0.95rem; line-height: 1.6; text-align: center; color: var(--text-primary);">
+                        Our kitchen has accepted your order. <strong>You will be contacted shortly through your given phone number</strong> to confirm details!
+                    </p>
+                    <div class="drone-progress">
+                        <div class="drone-progress-bar"></div>
+                        <div class="drone-icon-progress">🛵</div>
+                    </div>
+                    <p class="eta">Estimated Delivery: <strong>30 minutes</strong></p>
+                </div>
+                <a href="index.html" class="btn btn-primary btn-block">Return to Home Page</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio effects -->
+    <audio id="success-sound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-84.wav" preload="auto"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartItems = JSON.parse(localStorage.getItem('live_pizza_cart')) || [];
+            
+            const DOM = {
+                itemsList: document.getElementById('sc-items-review-list'),
+                subtotal: document.getElementById('sc-subtotal'),
+                delivery: document.getElementById('sc-delivery'),
+                tax: document.getElementById('sc-tax'),
+                total: document.getElementById('sc-total'),
+                form: document.getElementById('standalone-checkout-form'),
+                submitBtn: document.getElementById('sc-submit-btn'),
+                successOverlay: document.getElementById('standalone-success-overlay'),
+                
+                inputName: document.getElementById('sc-name'),
+                inputPhone: document.getElementById('sc-phone'),
+                inputAddress: document.getElementById('sc-address'),
+                inputCard: document.getElementById('sc-card'),
+                inputExp: document.getElementById('sc-exp'),
+                inputCvv: document.getElementById('sc-cvv'),
+                inputTerms: document.getElementById('sc-terms')
+            };
+
+            if (cartItems.length === 0) {
+                DOM.itemsList.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 2rem;">No items in cart. Redirecting...</p>`;
+                setTimeout(() => window.location.href = 'index.html', 2000);
+                return;
+            }
+
+            DOM.itemsList.innerHTML = cartItems.map(item => `
+                <div class="c-item-row">
+                    <img src="${item.imageSrc}" alt="${item.name}" class="c-item-img">
+                    <div class="c-item-info">
+                        <h4>${item.name}</h4>
+                        <span>Rs. ${item.price.toLocaleString()} x ${item.quantity}</span>
+                    </div>
+                    <div class="c-item-total">Rs. ${(item.price * item.quantity).toLocaleString()}</div>
+                </div>
+            `).join('');
+
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const delivery = 199;
+            const tax = Math.round(subtotal * 0.16); // 16% GST Sales Tax
+            const total = subtotal + delivery + tax;
+
+            DOM.subtotal.textContent = `Rs. ${subtotal.toLocaleString()}`;
+            DOM.delivery.textContent = `Rs. ${delivery.toLocaleString()}`;
+            DOM.tax.textContent = `Rs. ${tax.toLocaleString()}`;
+            DOM.total.textContent = `Rs. ${total.toLocaleString()}`;
+
+            const radios = document.getElementsByName('sc-payment');
+            radios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+                    e.target.closest('.payment-option').classList.add('selected');
+
+                    const method = e.target.value;
+                    document.getElementById('sc-card-fields').classList.add('hidden');
+                    document.getElementById('sc-crypt-fields').classList.add('hidden');
+                    document.getElementById('sc-cash-fields').classList.add('hidden');
+
+                    if (method === 'card') {
+                        document.getElementById('sc-card-fields').classList.remove('hidden');
+                    } else if (method === 'crypt') {
+                        document.getElementById('sc-crypt-fields').classList.remove('hidden');
+                    } else if (method === 'cash') {
+                        document.getElementById('sc-cash-fields').classList.remove('hidden');
+                    }
+                });
+            });
+
+            DOM.inputCard.addEventListener('input', (e) => {
+                let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let matches = v.match(/\d{4,16}/g);
+                let match = (matches && matches[0]) || '';
+                let parts = [];
+                for (let i = 0; i < match.length; i += 4) {
+                    parts.push(match.substring(i, i + 4));
+                }
+                e.target.value = parts.length > 0 ? parts.join(' ') : v;
+            });
+
+            DOM.inputExp.addEventListener('input', (e) => {
+                let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                e.target.value = v.length >= 2 ? v.substring(0, 2) + '/' + v.substring(2, 4) : v;
+            });
+
+            DOM.form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const chosenMethod = document.querySelector('input[name="sc-payment"]:checked').value;
+                if (chosenMethod === 'card') {
+                    const cardNum = DOM.inputCard.value.replace(/\s+/g, '');
+                    if (cardNum.length < 16) {
+                        createToast('Invalid Credit Card number length.', 'info');
+                        DOM.inputCard.focus();
+                        return;
+                    }
+                    if (DOM.inputExp.value.length < 5) {
+                        createToast('Please fill expiration date (MM/YY).', 'info');
+                        DOM.inputExp.focus();
+                        return;
+                    }
+                    if (DOM.inputCvv.value.length < 3) {
+                        createToast('Invalid CVV credentials.', 'info');
+                        DOM.inputCvv.focus();
+                        return;
+                    }
+                }
+
+                const originalText = DOM.submitBtn.innerHTML;
+                DOM.submitBtn.disabled = true;
+                DOM.submitBtn.innerHTML = `PLACING ORDER... 🍕`;
+
+                const orderData = {
+                    name: DOM.inputName.value,
+                    phone: DOM.inputPhone.value,
+                    address: DOM.inputAddress.value,
+                    payment: chosenMethod,
+                    cart: cartItems,
+                    subtotal: subtotal,
+                    delivery: delivery,
+                    tax: tax,
+                    total: total
+                };
+
+                fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    DOM.submitBtn.disabled = false;
+                    DOM.submitBtn.innerHTML = originalText;
+
+                    if (result.success) {
+                        const sfx = document.getElementById('success-sound');
+                        if (sfx) sfx.play().catch(() => {});
+
+                        // Clear cart
+                        localStorage.removeItem('live_pizza_cart');
+
+                        // Show success overlay
+                        DOM.successOverlay.style.display = 'block';
+                    } else {
+                        createToast(`Order placement failed: ${result.error || 'Connection Error'}`, 'info');
+                    }
+                })
+                .catch(err => {
+                    DOM.submitBtn.disabled = false;
+                    DOM.submitBtn.innerHTML = originalText;
+                    createToast(`Outbound ordering error: ${err.message}`, 'info');
+                });
+            });
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
