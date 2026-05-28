@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locations & Live Dispatch | ChefPizza</title>
+    <meta name="description" content="Track ChefPizza delivery drivers on our live dispatch radar map. Explore our Downtown HQ, Uptown, and Beachside branch coordinate sectors.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Special layout extensions for animated SVG Radar map */
+        .radar-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 2rem auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            backdrop-filter: blur(15px);
+        }
+        .radar-svg-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            background: #04020a;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-glass-active);
+            overflow: hidden;
+        }
+        .radar-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .radar-sweep {
+            transform-origin: 250px 250px;
+            animation: sweepRadar 8s linear infinite;
+        }
+        @keyframes sweepRadar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .radar-node {
+            cursor: pointer;
+            transition: var(--transition-float);
+        }
+        .radar-node:hover {
+            filter: drop-shadow(0 0 8px var(--accent-orange));
+        }
+        .radar-node.active circle {
+            fill: #ffd54f !important;
+            stroke: #ffd54f !important;
+        }
+        .radar-node-pulse {
+            animation: nodePulse 2s infinite;
+            transform-origin: center;
+        }
+        @keyframes nodePulse {
+            0% { r: 6; opacity: 1; }
+            100% { r: 18; opacity: 0; }
+        }
+        .telemetry-panel {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 0.6rem;
+            font-size: 0.9rem;
+        }
+        .telemetry-row span {
+            color: var(--text-secondary);
+        }
+        .telemetry-row strong {
+            color: var(--text-primary);
+        }
+        @media(max-width:768px) {
+            .radar-container {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Custom Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Sticky Glassmorphic Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" width="36" height="36">
+                    <circle cx="50" cy="50" r="40" stroke="url(#logo-grad)" stroke-width="6" fill="none" />
+                    <path d="M50 15 L80 65 L20 65 Z" fill="url(#logo-grad)" opacity="0.8" />
+                    <circle cx="50" cy="40" r="5" fill="#fff" />
+                    <circle cx="42" cy="52" r="4" fill="#fff" />
+                    <circle cx="58" cy="52" r="4" fill="#fff" />
+                    <defs>
+                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff5722" />
+                            <stop offset="100%" stop-color="#ffb74d" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>Chef<span class="highlight">Pizza</span></span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="menu.html" class="nav-link">Our Menu</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="about.html" class="nav-link">About Crew</a>
+                <a href="location.html" class="nav-link active">Live Radar</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="cart-toggle-btn" class="cart-btn" aria-label="Open Shopping Cart">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                    </svg>
+                    <span id="cart-badge" class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subpage Hero -->
+    <section class="subpage-hero">
+        <div class="subpage-hero-content">
+            <span class="hero-tag">Real-Time Dispatch Feed</span>
+            <h1 class="hero-title">Live Delivery <span class="text-glow">Radar Map</span></h1>
+            <p class="hero-subtitle">
+                Track active deliveries, kitchen branches, and driver coordinates in real time. Click nodes on the dispatch radar grid below to lock coordinates.
+            </p>
+        </div>
+    </section>
+
+    <!-- Radar Map Panel -->
+    <section class="calc-section" style="padding-top: 1rem;">
+        <div class="radar-container">
+            <!-- Radar SVG Canvas -->
+            <div class="radar-svg-wrapper">
+                <svg class="radar-svg" viewBox="0 0 500 500">
+                    <defs>
+                        <radialGradient id="radar-glow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="rgba(255, 87, 34, 0.15)" />
+                            <stop offset="100%" stop-color="rgba(7, 4, 14, 0)" />
+                        </radialGradient>
+                    </defs>
+
+                    <!-- Circular Glowing Center -->
+                    <circle cx="250" cy="250" r="240" fill="url(#radar-glow)" />
+
+                    <!-- Radar Grid Circles -->
+                    <circle cx="250" cy="250" r="240" stroke="rgba(255,87,34,0.15)" stroke-width="1" fill="none" />
+                    <circle cx="250" cy="250" r="180" stroke="rgba(255,87,34,0.15)" stroke-width="1" fill="none" stroke-dasharray="4,4" />
+                    <circle cx="250" cy="250" r="120" stroke="rgba(255,87,34,0.15)" stroke-width="1" fill="none" />
+                    <circle cx="250" cy="250" r="60" stroke="rgba(255,87,34,0.15)" stroke-width="1" fill="none" stroke-dasharray="4,4" />
+
+                    <!-- Cross Grid Axes -->
+                    <line x1="10" y1="250" x2="490" y2="250" stroke="rgba(255,87,34,0.15)" stroke-width="1" />
+                    <line x1="250" y1="10" x2="250" y2="490" stroke="rgba(255,87,34,0.15)" stroke-width="1" />
+
+                    <!-- Sweep Line (Animated) -->
+                    <g class="radar-sweep">
+                        <line x1="250" y1="250" x2="250" y2="10" stroke="#ff5722" stroke-width="2.5" />
+                        <path d="M250,10 A240,240 0 0,1 420,80 L250,250 Z" fill="rgba(255, 87, 34, 0.08)" />
+                    </g>
+
+                    <!-- Tracking Node 1: Downtown HQ -->
+                    <g class="radar-node active" id="node-cc" data-name="Downtown Kitchen (HQ)" data-lat="40.7128° N" data-lon="74.0060° W" data-alt="8 km Radius" data-pres="900°F (Oak-Fired)" data-status="ACTIVE BAKING">
+                        <circle cx="340" cy="180" r="12" class="radar-node-pulse" fill="none" stroke="#ff5722" stroke-width="1.5" />
+                        <circle cx="340" cy="180" r="6" fill="#ff5722" />
+                    </g>
+
+                    <!-- Tracking Node 2: Uptown Hub -->
+                    <g class="radar-node" id="node-mj" data-name="Uptown Express Hub" data-lat="40.7891° N" data-lon="73.9598° W" data-alt="5 km Radius" data-pres="880°F (Stone-Fired)" data-status="STANDBY">
+                        <circle cx="160" cy="200" r="12" class="radar-node-pulse" fill="none" stroke="#ff5722" stroke-width="1.5" />
+                        <circle cx="160" cy="200" r="6" fill="#ff5722" />
+                    </g>
+
+                    <!-- Tracking Node 3: Beachside Branch -->
+                    <g class="radar-node" id="node-iss" data-name="Beachside Waterfront Branch" data-lat="40.5794° N" data-lon="73.9845° W" data-alt="6 km Radius" data-pres="900°F (Hickory-Fired)" data-status="ACTIVE BAKING">
+                        <circle cx="250" cy="100" r="12" class="radar-node-pulse" fill="none" stroke="#ffca28" stroke-width="1.5" />
+                        <circle cx="250" cy="100" r="6" fill="#ffca28" />
+                    </g>
+
+                    <!-- Tracking Node 4: Delivery vehicle -->
+                    <g class="radar-node" id="node-dr" data-name="Delivery Vehicle LP-893" data-lat="40.7259° N" data-lon="73.9980° W" data-alt="Insulated Car" data-pres="140°F Core Temp" data-status="DELIVERING HOT">
+                        <circle cx="290" cy="290" r="12" class="radar-node-pulse" fill="none" stroke="#66bb6a" stroke-width="1.5" />
+                        <circle cx="290" cy="290" r="6" fill="#66bb6a" />
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Telemetry Details Panel -->
+            <div class="telemetry-panel">
+                <h3 id="t-station" class="text-glow" style="margin-top: 0;">Downtown Kitchen (HQ)</h3>
+                <p style="font-size: 0.85rem; margin-bottom: 0.5rem;">Branch connection aligned. Live dispatch stream active.</p>
+                
+                <div class="telemetry-row">
+                    <span>Latitude Coordinates</span>
+                    <strong id="t-lat">40.7128° N</strong>
+                </div>
+                <div class="telemetry-row">
+                    <span>Longitude Coordinates</span>
+                    <strong id="t-lon">74.0060° W</strong>
+                </div>
+                <div class="telemetry-row">
+                    <span>Delivery Range</span>
+                    <strong id="t-alt">8 km Radius</strong>
+                </div>
+                <div class="telemetry-row">
+                    <span>Oven Heat Status</span>
+                    <strong id="t-pres">900°F (Oak-Fired)</strong>
+                </div>
+                <div class="telemetry-row" style="border: none;">
+                    <span>Branch Status</span>
+                    <strong id="t-status" style="color: #66bb6a;">ACTIVE BAKING</strong>
+                </div>
+
+                <a href="index.html#menu" class="btn btn-primary btn-pulse btn-block" style="margin-top: auto;">Order Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Area -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 ChefPizza Inc. Handcrafting wood-fired masterpieces. Taste the Future.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Delivery Status</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shared Cart Drawer Overlay -->
+    <div id="cart-drawer" class="cart-drawer-overlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h2>Your Cart <span id="cart-count-title">(0)</span></h2>
+                <button id="cart-close-btn" class="close-btn" aria-label="Close Cart">&times;</button>
+            </div>
+
+            <div id="cart-view-container" class="cart-panel-body active">
+                <div id="cart-empty-state" class="cart-empty-state">
+                    <div class="empty-icon">🍕</div>
+                    <h3>Your Cart is Empty!</h3>
+                    <p>Add some gourmet wood-fired energy to start your feast.</p>
+                    <button id="start-shopping-btn" class="btn btn-primary" style="margin-top: 1.5rem;">Explore Menu</button>
+                </div>
+
+                <div id="cart-items-list" class="cart-items-list">
+                    <!-- Dynamic items loaded here -->
+                </div>
+
+                <div id="cart-summary-section" class="cart-summary-section">
+                    <div class="summary-row">
+                        <span>Hand-Tossed Crusts</span>
+                        <span id="summary-subtotal">Rs. 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Piping Hot Delivery</span>
+                        <span id="summary-delivery">Rs. 199</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>GST Sales Tax (16%)</span>
+                        <span id="summary-tax">Rs. 0</span>
+                    </div>
+                    <hr class="summary-divider">
+                    <div class="summary-row total">
+                        <span>Total Cost</span>
+                        <span id="summary-total">Rs. 0</span>
+                    </div>
+                    <a href="checkout.html" id="checkout-btn" class="btn btn-primary btn-block">Proceed to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio effects -->
+    <audio id="success-sound" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-84.wav" preload="auto"></audio>
+    <audio id="cart-add-sound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const nodes = document.querySelectorAll('.radar-node');
+            
+            const DOM = {
+                station: document.getElementById('t-station'),
+                lat: document.getElementById('t-lat'),
+                lon: document.getElementById('t-lon'),
+                alt: document.getElementById('t-alt'),
+                pres: document.getElementById('t-pres'),
+                status: document.getElementById('t-status')
+            };
+
+            nodes.forEach(node => {
+                node.addEventListener('click', () => {
+                    nodes.forEach(n => n.classList.remove('active'));
+                    node.classList.add('active');
+
+                    const name = node.getAttribute('data-name');
+                    const lat = node.getAttribute('data-lat');
+                    const lon = node.getAttribute('data-lon');
+                    const alt = node.getAttribute('data-alt');
+                    const pres = node.getAttribute('data-pres');
+                    const status = node.getAttribute('data-status');
+
+                    DOM.station.textContent = name;
+                    DOM.lat.textContent = lat;
+                    DOM.lon.textContent = lon;
+                    DOM.alt.textContent = alt;
+                    DOM.pres.textContent = pres;
+                    DOM.status.textContent = status;
+
+                    if (status.includes('BAKING') || status.includes('READY')) {
+                        DOM.status.style.color = '#66bb6a';
+                    } else if (status.includes('DELIVERING')) {
+                        DOM.status.style.color = '#ff5722';
+                    } else {
+                        DOM.status.style.color = '#ffca28';
+                    }
+
+                    createToast(`Branch selected: ${name}`, 'info');
+                });
+            });
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
